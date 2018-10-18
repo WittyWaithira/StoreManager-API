@@ -14,12 +14,8 @@ class Products(Resource):
 						{'status': 200}
 			)
 
-
-
-
-
 	def post(name):
-		
+
 		data = request.get_json()
 		if not data:
 			return jsonify({"message": "field cannot be empty"})

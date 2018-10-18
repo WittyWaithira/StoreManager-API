@@ -1,12 +1,10 @@
+from flask import Flask, Blueprint
 from flask_restful import Api, Resource
-from flask import Blueprint
+from ....api.v1.views.products import Products, Product_id
+from ....api.v1.views.sales import Sales, SingleSales
 
-#local imports goes here
-from views.products import Products, Product_id
-from  views.sales import Sales,SingleSales
-
-version1  = Blueprint('api', __name__, url_prefix= '/api/v1')
-api = Api(version1)
+first= Blueprint('api', __name__, url_prefix= '/api/v1')
+api = Api(first)
 
 api.add_resource(Sales, '/sales')
 api.add_resource(SingleSales, '/sales/<int:id>')
