@@ -1,8 +1,10 @@
+#not in use now
 from datetime import datetime
 
 sales = []
+products =[]
 
-class SalesOperattions():
+class SalesOperations():
 
     def __init__(self):
         self.db = sales
@@ -28,3 +30,25 @@ class SalesOperattions():
                 return sale, 200
 
         return "Sales with that id not found", 404
+
+class Products():
+    def __init__(self):
+        self.db = products
+
+    def description(self,pname,price):
+        stock ={
+        "product_id": len(self.db)+1,
+         "pname": pname,
+         "price":price
+          }
+        self.db.append(stock)
+        return stock
+
+    def returnAll(self):
+        return self.db
+    def returnNone(self,id):
+        for product in self.db:
+            if(id == product['product_id']):
+                return product, 200
+
+                return "Product with that id not found",404
