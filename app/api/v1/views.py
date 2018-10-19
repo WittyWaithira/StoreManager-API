@@ -11,85 +11,92 @@ class Sales(Resource):
 
 
     def get(self):
-        return jsonify(sales)
+
         return make_response(jsonify({
-            "Message" : "Success",
-            "Sales" : result
+            "Sales" : sales
         }), 200)
 
     def post(self):
-        data = request.get_json()
-        if not data:
-            return jsonify({"message":"You cannot leave this empty"})
+        sales_data = request.get_json()
 
-            sales_id : len(sales)+1
-            product : 'product'
-            price: 'price'
-            attendant : 'attendant'
-            time : datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
+        # users data entered, stored in variables
+        sales_id = sales_data['salesId']
+        category = sales_data['category']
+        sale_name = sales_data['product_name']
+        quantity = sales_data['quantity']
+        price = sales_data['price']
 
-        if not product or product == " ":
-            return jsonify({"message": "Please enter product name"}), 404
-        else:
-            payload = {
-			'sale_id':sale_id,
-			'product': product,
-            'price':price,
-			'attendant': attendant
-			}
-        sales.append(payload)
-        return make_response(jsonify({'list': sales}))
+        # check if product is available in the products list
+        for sale in sales:
+            if sales_id==sale(["sales_id"]):
+                return "{} already exists".format(sales_id),400
+        # store products in a dictionary
+        sales_cart = {
+            "salesId":sales_id,
+            "category":category,
+            "product_name":sale_name,
+            "quantity":quantity,
+            "price":price
+        }
+        # add sale product to the sale list
+        sales.append(sales_cart)
+
+        # message to be displayed
+        return jsonify({'response':'New Sale recorded'})
 
 
 class SingleSales(Resource):
-    def get(self, id):
-        sale = [sale for sale in sales if sale['sale_id'] == sale_id] or None
-        if sale:
-            return jsonify({'sale':sale[0]})
-        else:
-            return jsonify({'message': "item not found"})
-            return 404
+        def get(self, salesId):
+
+            for sales in sale:
+                if sales['salesId'] == salesId:
+                    return jsonify({"response":sales})
+            return jsonify({"response":"Product Not Available"})
+
 class Products(Resource):
+        def get(self):
 
-	def get(self):
-
-		return jsonify(products)
-		return jsonify({'message':'Item not found'},
-						{'status': 200}
-			)
-
-	def post(name):
-
-		data = request.get_json()
-		if not data:
-			return jsonify({"message": "field cannot be empty"})
-		name = data['name']
-		price = data['price']
-		product_id = len(products)+1
-		quantity = data['quantity']
-		if not name or name == "":
-			return jsonify({"message": "Please enter product name"}), 404
-		else:
-
-			payload = {
-			'name': name,
-			'price': price,
-			'product_id': product_id,
-			'quantity': quantity
-			}
-
-			products.append(payload)
-
-			return make_response(jsonify({'list': products}), 201)
+            return make_response(jsonify(
+                {
+                    'Products':product
+                }
+            ),200)
 
 
+        def post(self):
 
-class Product_id(Resource):
+            # fetch users input data
+            data = request.get_json()
+            if not data:
+                return jsonify({"response": "Fields cannot be empty"})
+            id = data['productId']
+            category = data['category']
+            name = data['name']
 
-	def get(self, product_id):
-		product = [product for product in products if product['product_id'] == product_id] or None
-		if product:
-			return jsonify({'product':product[0]})
-		else:
-			return jsonify({'message': "specific product not found"})
-		return 404
+            # dictionary data structure for users products
+            users_products = {
+                "productId":id,
+                "category":category,
+                "name":name
+            }
+            # Store products obtained from the user in a list
+            product.append(users_products)
+
+            # message to be displayed to the user
+            return jsonify( {'response':'New product added successfully'})
+
+class GetSingleProduct(Resource):
+    ''' fetch a single product '''
+    def get(self, productId):
+            """Fetch a single product record
+                param:
+                <int:productId>
+            """
+            for product in products:
+                if product['productId'] == productId:
+                    return jsonify(
+                        {
+                            'response':product
+                        }
+                    )
+            return jsonify({'response':'Product Not Available'})
