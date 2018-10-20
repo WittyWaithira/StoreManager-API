@@ -1,5 +1,6 @@
 from flask_restful import Resource
 from flask import jsonify, make_response, request
+from flask_jwt_extended import (JWTManager, jwt_required, get_jwt_claims)
 from datetime import datetime
 from flask.views import View
 
