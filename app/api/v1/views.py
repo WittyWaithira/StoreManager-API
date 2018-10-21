@@ -1,5 +1,6 @@
 from flask_restful import Resource
 from flask import jsonify, make_response, request
+from flask_jwt_extended import (JWTManager, jwt_required, get_jwt_claims)
 from datetime import datetime
 from flask.views import View
 
@@ -8,14 +9,13 @@ sales = []
 product=[]
 
 class Sales(Resource):
-
-
+    @jwt_required
     def get(self):
-
         return make_response(jsonify({
             "Sales" : sales
         }), 200)
 
+    @jwt_required
     def post(self):
         sales_data = request.get_json()
 
@@ -46,6 +46,7 @@ class Sales(Resource):
 
 
 class SingleSales(Resource):
+        @jwt_required
         def get(self, salesId):
 
             for sales in sale:
@@ -54,6 +55,7 @@ class SingleSales(Resource):
             return jsonify({"response":"Product Not Available"})
 
 class Products(Resource):
+        @jwt_required
         def get(self):
 
             return make_response(jsonify(
@@ -62,7 +64,7 @@ class Products(Resource):
                 }
             ),200)
 
-
+        @jwt_required
         def post(self):
 
             # fetch users input data
@@ -87,6 +89,7 @@ class Products(Resource):
 
 class GetSingleProduct(Resource):
     ''' fetch a single product '''
+    @jwt_required
     def get(self, productId):
             """Fetch a single product record
                 param:
