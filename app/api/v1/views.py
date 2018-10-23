@@ -6,7 +6,7 @@ from flask.views import View
 
 sales = []
 
-product=[]
+products=[]
 
 class Sales(Resource):
 
@@ -43,8 +43,8 @@ class SingleSales(Resource):
             Get only a single sale using saleid
             param : Store Owner/admin and store attendant of the specific sale record
         """
-        for sales in sale:
-            if sales['salesId'] == salesId:
+        for sale in sales:
+            if sale['salesId'] == salesId:
                 return jsonify({"response":sales})
 
         return jsonify({"response":"Product Not Available"})
@@ -79,7 +79,7 @@ class Products(Resource):
                 "name":name
             }
             # Store products obtained from the user in a list
-            product.append(users_products)
+            products.append(users_products)
 
             # message to be displayed to the user
             return jsonify( {'response':'New product added successfully'})

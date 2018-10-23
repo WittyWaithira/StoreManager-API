@@ -9,7 +9,7 @@ api = Api(version1)
 
 
 api.add_resource(Sales, '/sales')
-api.add_resource(SingleSales, '/sales/<int:sales_id>')
+api.add_resource(SingleSales, '/sales/<int:salesId>')
 api.add_resource(Products, '/products')
 api.add_resource(GetSingleProduct, '/products/<int:productId>')
 #api.add_resource(UserRegistration, '/register')
