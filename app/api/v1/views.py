@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import jsonify, make_response, request
-from flask_jwt_extended import (JWTManager, jwt_required, get_jwt_claims)
-from datetime import datetime
+#from flask_jwt_extended import (JWTManager, jwt_required, get_jwt_claims)
+#from datetime import datetime
 from flask.views import View
 
 sales = []
@@ -9,53 +9,50 @@ sales = []
 product=[]
 
 class Sales(Resource):
-    @jwt_required
+
     def get(self):
         return make_response(jsonify({
             "Sales" : sales
         }), 200)
 
-    @jwt_required
+
     def post(self):
-        sales_data = request.get_json()
+        data = request.get_json()
+        if not data:
+            return jsonify({"response": "Fields cannot be empty"})
+        id = data['salesId']
+        category = data['category']
+        name = data['name']
 
-        # users data entered, stored in variables
-        sales_id = sales_data['salesId']
-        category = sales_data['category']
-        sale_name = sales_data['product_name']
-        quantity = sales_data['quantity']
-        price = sales_data['price']
-
-        # check if product is available in the products list
-        for sale in sales:
-            if sales_id==sale(["sales_id"]):
-                return "{} already exists".format(sales_id),400
-        # store products in a dictionary
-        sales_cart = {
-            "salesId":sales_id,
+        # dictionary data structure for users products
+        sales_record = {
+            "salesId":id,
             "category":category,
-            "product_name":sale_name,
-            "quantity":quantity,
-            "price":price
+            "name":name
         }
-        # add sale product to the sale list
-        sales.append(sales_cart)
+        # Store products obtained from the user in a list
+        sales.append(sales_record)
 
-        # message to be displayed
-        return jsonify({'response':'New Sale recorded'})
+        # message to be displayed to the user
+        return jsonify( {'response':'New product added successfully'})
 
 
 class SingleSales(Resource):
-        @jwt_required
-        def get(self, salesId):
+    def get(self, salesId):
+        """
+            Get only a single sale using saleid
+            param : Store Owner/admin and store attendant of the specific sale record
+        """
+        for sales in sale:
+            if sales['salesId'] == salesId:
+                return jsonify({"response":sales})
 
-            for sales in sale:
-                if sales['salesId'] == salesId:
-                    return jsonify({"response":sales})
-            return jsonify({"response":"Product Not Available"})
+        return jsonify({"response":"Product Not Available"})
+
+
 
 class Products(Resource):
-        @jwt_required
+
         def get(self):
 
             return make_response(jsonify(
@@ -64,7 +61,7 @@ class Products(Resource):
                 }
             ),200)
 
-        @jwt_required
+
         def post(self):
 
             # fetch users input data
@@ -89,7 +86,7 @@ class Products(Resource):
 
 class GetSingleProduct(Resource):
     ''' fetch a single product '''
-    @jwt_required
+
     def get(self, productId):
             """Fetch a single product record
                 param:

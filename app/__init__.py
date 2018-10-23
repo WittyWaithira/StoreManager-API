@@ -1,7 +1,10 @@
 from flask import Flask, Blueprint
-from app.api.v1 import version1
+#from instance.config import app_config
+
 
 def create_app():
     app = Flask(__name__)
-    app.register_blueprint(version1)
+    from app.api.v1 import version1 as v1
+    app.register_blueprint(v1)
+
     return app
