@@ -6,7 +6,7 @@ from app import create_app
 class TestProduct(unittest.TestCase):
 
     def setUp(self):
-    
+
         self.app = create_app()
         self.app.testing = True
         self.client = self.app.test_client()
@@ -15,8 +15,8 @@ class TestProduct(unittest.TestCase):
             "category":"kitchenware",
             "name":"pan"
         }
-def test_get_product(self):
-    pass
+    def test_get_product(self):
+        pass
 
- def test_getSingleProduct(self):
-     pass
+    def test_getSingleProduct(self):
+        pass

@@ -2,17 +2,21 @@ from flask_restful import Resource
 from flask import jsonify, make_response, request
 #from flask_jwt_extended import (JWTManager, jwt_required, get_jwt_claims)
 #from datetime import datetime
-from flask.views import View
+#from flask.views import View
+from app.api.v1.models import SalesData
 
-sales = []
 
 products=[]
 
-class Sales(Resource):
+class Sales(Resource, SalesData):
+
+    def __init__(self):
+        self.salesmodel = SalesData()
 
     def get(self):
+        result  = self.salesmodel.fetchall()
         return make_response(jsonify({
-            "Sales" : sales
+            "Sales" : result
         }), 200)
 
 
@@ -20,34 +24,28 @@ class Sales(Resource):
         data = request.get_json()
         if not data:
             return jsonify({"response": "Fields cannot be empty"})
-        id = data['salesId']
+        #id = data['salesId']
         category = data['category']
         name = data['name']
 
-        # dictionary data structure for users products
-        sales_record = {
-            "salesId":id,
-            "category":category,
-            "name":name
-        }
-        # Store products obtained from the user in a list
-        sales.append(sales_record)
-
-        # message to be displayed to the user
-        return jsonify( {'response':'New product added successfully'})
+        resp = self.salesmodel.save(category, name)
+        return jsonify( {"Response" : resp})
 
 
-class SingleSales(Resource):
+class SingleSales(Resource, SalesData):
+
+    def __init__(self):
+        self.salesmodel = SalesData()
+
+
     def get(self, salesId):
         """
             Get only a single sale using saleid
             param : Store Owner/admin and store attendant of the specific sale record
         """
-        for sale in sales:
-            if sale['salesId'] == salesId:
-                return jsonify({"response":sales})
+        resp = self.salesmodel.fetchone(salesId)
 
-        return jsonify({"response":"Product Not Available"})
+        return resp
 
 
 
@@ -57,7 +55,7 @@ class Products(Resource):
 
             return make_response(jsonify(
                 {
-                    'Products':product
+                    'Products':products
                 }
             ),200)
 
