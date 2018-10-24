@@ -15,7 +15,7 @@ class SalesData():
     def fetchone(self, id):
         for sale in self.sale:
             if sale['salesId'] == id:
-                return jsonify({"response": self.sale})
+                return jsonify({"response": self.sale}) 
 
         return jsonify({"response":"Product Not Available"})
 
