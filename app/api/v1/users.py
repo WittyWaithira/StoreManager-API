@@ -33,8 +33,8 @@ class UserLogin(Resource,User):
                 "status": 400
             })
 
-        #access_token = create_access_token(identity=email)
-        return jsonify( "message" : "Login successful!")
+        access_token = create_access_token(identity=email)
+        return jsonify(token = access_token, message = "Login successful!")
 
 class Register(Resource, User):
 
