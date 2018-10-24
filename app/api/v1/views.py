@@ -64,7 +64,7 @@ class Products(Resource):
         name = data['name']
 
         resp = self.productsmodel.save(category, name)
-        return jsonify( {"Response" : resp})
+        return make_response(jsonify( {"Response" : resp, "message":"success"}), 201)
 
 
 class GetSingleProduct(Resource,ProductsData):
