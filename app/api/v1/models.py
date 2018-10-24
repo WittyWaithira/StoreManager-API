@@ -15,7 +15,7 @@ class SalesData():
     def fetchone(self, id):
         for sale in self.sale:
             if sale['salesId'] == id:
-                return jsonify({"response": self.sale})
+                return jsonify({"response": sale})
 
         return jsonify({"response":"Product Not Available"})
 
@@ -45,10 +45,10 @@ class ProductsData():
 
     def fetchone(self, id):
         for product in self.product:
-           if product['productId'] == id:
-               return jsonify({"response": self.product})
+            if product['productId'] == id:
+               return jsonify({"response": product})
 
-               return jsonify({"response":"Product Not Available"})
+            return jsonify({"response":"Product Not Available"})
 
     def save(self, category, name):
         for product in self.product:
