@@ -15,7 +15,7 @@ class SalesData():
     def fetchone(self, id):
         for sale in self.sale:
             if sale['salesId'] == id:
-                return jsonify({"response": self.sale}) 
+                return jsonify({"response": self.sale})
 
         return jsonify({"response":"Product Not Available"})
 
@@ -25,17 +25,15 @@ class SalesData():
             if sale['name'] == name:
                 return "product already exists"
 
-        for product in self.product:
-            if product['name'] == name:
-                payload = {
-                    "salesId":len(self.sale)+1,
-                    "category":category,
-                    "name":name
-                }
-                self.sale.append(payload)
-                return payload
+        payload = {
+            "salesId":len(self.sale)+1,
+            "category":category,
+            "name":name
+        }
+        self.sale.append(payload)
+        return payload
 
-                return "There is no such product"
+                # return "There is no such product"
 
 class ProductsData():
     def __init__(self):
@@ -53,18 +51,15 @@ class ProductsData():
                return jsonify({"response":"Product Not Available"})
 
     def save(self, category, name):
-        #for product in self.product:
-          #if product['name'] == name:
-              #return "product already exists"
-
         for product in self.product:
-             if product['name'] == name:
-                 payload = {
-                  "productId":len(self.product)+1,
-                  "category":category,
-                  "name":name
-              }
-             self.product.append(payload)
-             return payload
+            if product['name'] == name:
+                return "Product exists"
+        payload = {
+              "productId":len(self.product)+1,
+              "category":category,
+              "name":name
+            }
+        self.product.append(payload)
+        return payload
 
-             return "There is no such product"
+            # return "There is no such product"

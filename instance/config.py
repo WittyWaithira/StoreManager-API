@@ -3,7 +3,7 @@ import os
 
 class config(object):
 	DEBUG = False
-	SECRET = os.getenv('secret')
+	SECRET = os.getenv('SECRET_KEY')
 
 
 	@staticmethod

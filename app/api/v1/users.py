@@ -1,6 +1,7 @@
 import re
 from flask_restful import Resource
 from flask import jsonify, make_response, request
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_raw_jwt
 from app.api.v1.users_models import User,users
 
 email_format = r"(^[a-zA-z0-9_.]+@[a-zA-z0-9-]+\.[a-z]+$)"
