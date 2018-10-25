@@ -26,7 +26,10 @@ class Sales(Resource, SalesData):
         name = data['name']
 
         resp = self.salesmodel.save(category, name)
-        return jsonify( {"Response" : resp})
+        return make_response(jsonify({
+            "Response" : resp,
+            "message":"Created successfully"
+            }), 201)
 
 
 class SingleSales(Resource, SalesData):
