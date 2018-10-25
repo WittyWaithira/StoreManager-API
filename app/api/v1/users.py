@@ -1,7 +1,7 @@
 import re
 from flask_restful import Resource
 from flask import jsonify, make_response, request
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_raw_jwt
+# from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_raw_jwt
 from app.api.v1.users_models import User,users
 
 email_format = r"(^[a-zA-z0-9_.]+@[a-zA-z0-9-]+\.[a-z]+$)"
@@ -34,8 +34,9 @@ class UserLogin(Resource,User):
                 "status": 400
             })
 
-        access_token = create_access_token(identity=email)
-        return jsonify(token = access_token, message = "Login successful!")
+        # access_token = create_access_token(identity=email)
+        # return jsonify(token = access_token, message = "Login successful!")
+        return jsonify( message = "Login successful!")
 
 class Register(Resource, User):
 
