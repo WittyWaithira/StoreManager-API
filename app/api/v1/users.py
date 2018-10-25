@@ -15,30 +15,26 @@ class UserLogin(Resource,User):
         password =data["password"]
 
         if not data:
-            return jsonify("Fields cannot be empty")
+            return {'message': 'Fields cannot be empty'}, 400
+
         if not email or not password:
-            return jsonify("You must provide username and password")
+            return {'message': 'Fields cannot be empty'}, 400 #400 bad request
+
 
         if not re.match(email_format, email):
-            return jsonify({"message": "Invalid Email address"})
+            return {'message': 'Invalid email address'}, 400
+
 
         user_exists = [user for user in users if email == user["email"]]
 
         if not user_exists:
-            return jsonify({
-                "message":"User does not exist"
-            })
+            return {'message': 'User does not exist'}, 400
         if password != user_exists[0]["password"]:
-            return jsonify({
-                "message":"Wrong password",
-                "status": 400
-            })
+            return {'message': 'Wrong password'}, 400
 
         # access_token = create_access_token(identity=email)
         # return jsonify(token = access_token, message = "Login successful!")
-        return jsonify( {
-            "message":"logged in  successfully",
-            "status": 200})
+        return {'message': 'Login successful'}, 200
 
 class Register(Resource, User):
 
@@ -53,19 +49,17 @@ class Register(Resource, User):
         if not data:
             return jsonify("Data must be in json format")
         if not email or not password:
-            return jsonify({"message":"You must provide email and password"})
+            return {'message': 'Invalid email or password'}, 400
 
         if not re.match(email_format, email):
-            return jsonify({"message": "Invalid email address"})
+            return {'message': 'Invalid email address'}, 400
 
         user_exists = [user for user in users if email == user["email"]]
 
         if user_exists:
-            return jsonify({"message":"Email address already exists"})
+            return {'message': 'Email address already exists'}, 400
+
 
         else:
             user.save_user(email,name, password, role)
-            return jsonify({
-                "message":"User has been registered successfully",
-                "status": 200
-            })
+            return {'message': 'User has been registred successfully'}, 200

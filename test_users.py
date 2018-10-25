@@ -21,11 +21,21 @@ class TestUsers(unittest.TestCase):
         }
 
     def test_post_register(self):
-        response = self.client.post(
+        response1 = self.client.post(
                '/api/v1/register',
                 content_type='application/json',data=json.dumps(self.register)
            )
-        self.assertEqual(response.status_code, 200)
+        res1 = json.loads(response1.data.decode('utf-8'))
+        self.assertEqual(response1.status_code, 201)
+        self.assertEqual(res1['message'], "User has been registered successfully")
+        response = self.client.post(
+               '/api/v1/register',
+                content_type='application/json',data=json.dumps(self.register)
+            )
+        res = json.loads(response.data.decode('utf-8'))
+        self.assertEqual(res['message'], "Email address already exists")
+
+
 
 
     def test_post_login(self):

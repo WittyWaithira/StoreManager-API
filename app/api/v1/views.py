@@ -29,7 +29,7 @@ class Sales(Resource, SalesData):
         return make_response(jsonify({
             "Response" : resp,
             "message":"Created successfully"
-            }), 201)
+            }), 200)
 
 
 class SingleSales(Resource, SalesData):
