@@ -20,7 +20,7 @@ class SalesData():
         return jsonify({"response":"Product Not Available"})
 
 
-    def save(self, category, name):
+    def save(self, category, name,quantity,price):
         for sale in self.sale:
             if sale['name'] == name:
                 return "sale already exists"
@@ -28,7 +28,9 @@ class SalesData():
         payload = {
             "salesId":len(self.sale)+1,
             "category":category,
-            "name":name
+            "name":name,
+            "quantity":quantity,
+            "price":price
         }
         self.sale.append(payload)
         return payload
@@ -50,14 +52,16 @@ class ProductsData():
 
         return jsonify({"response":"Product Not Available"})
 
-    def save(self, category, name):
+    def save(self, category, name,quantity,price):
         for product in self.product:
             if product['name'] == name:
                 return "Product exists"
         payload = {
               "productId":len(self.product)+1,
               "category":category,
-              "name":name
+              "name":name,
+              "quantity":quantity,
+              "price" :price
             }
         self.product.append(payload)
         return payload

@@ -24,8 +24,10 @@ class Sales(Resource, SalesData):
         #id = data['salesId']
         category = data['category']
         name = data['name']
+        quantity = data['quantity']
+        price = data ['price']
 
-        resp = self.salesmodel.save(category, name)
+        resp = self.salesmodel.save(category, name,quantity,price)
         return make_response(jsonify({
             "Response" : resp,
             "message":"Created successfully"
@@ -63,8 +65,10 @@ class Products(Resource):
 
         category = data['category']
         name = data['name']
+        quantity = data['quantity']
+        price = data ['price']
 
-        resp = self.productsmodel.save(category, name)
+        resp = self.productsmodel.save(category, name,quantity,price)
         return make_response(jsonify( {"Response" : resp, "message":"success"}), 201)
 
 
