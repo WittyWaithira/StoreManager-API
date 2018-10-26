@@ -24,7 +24,7 @@ class TestSales(unittest.TestCase):
             result = json.loads(response.data.decode('utf-8'))
             self.assertEqual(response.status_code, 200, result['Sales'])
 
-        
+
 
     def test_get_single_sale(self):
         '''test get single sale'''
