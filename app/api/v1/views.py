@@ -40,7 +40,7 @@ class SingleSales(Resource, SalesData):
 
     def get(self, salesId):
         resp = self.salesmodel.fetchone(salesId)
-        
+
         return resp
 
 

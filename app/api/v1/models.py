@@ -23,7 +23,7 @@ class SalesData():
     def save(self, category, name):
         for sale in self.sale:
             if sale['name'] == name:
-                return "product already exists"
+                return "sale already exists"
 
         payload = {
             "salesId":len(self.sale)+1,
