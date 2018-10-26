@@ -39,16 +39,10 @@ class SingleSales(Resource, SalesData):
 
 
     def get(self, salesId):
-        """
-            Get only a single sale using saleid
-             
-        """
-        for sale in sales:
-            if int(sale['salesId']) == int(salesId):
-                return jsonify({"response":sale})
-            # how to handle non-int
+        resp = self.salesmodel.fetchone(salesId)
+        
+        return resp
 
-        return jsonify({"response":"Sale record Not Available"})
 
 
 

@@ -32,7 +32,7 @@ class UserLogin(Resource,User):
         if password != user_exists[0]["password"]:
             return {'message': 'Wrong password'}, 400
 
-        access_token = create_access_token(identity=email)
+        #access_token = create_access_token(identity=email)
         #return jsonify(token = access_token, message = "Login successful!")
         return {'message': 'Login successful'}, 200
 
