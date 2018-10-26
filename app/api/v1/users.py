@@ -15,7 +15,7 @@ class UserLogin(Resource,User):
         password =data["password"]
 
         if not data:
-            return {'message': 'Fields cannot be empty'}, 400
+            return {'message': 'Data should be in json format'}, 400
 
         if not email or not password:
             return {'message': 'Fields cannot be empty'}, 400 #400 bad request
@@ -32,8 +32,8 @@ class UserLogin(Resource,User):
         if password != user_exists[0]["password"]:
             return {'message': 'Wrong password'}, 400
 
-        # access_token = create_access_token(identity=email)
-        # return jsonify(token = access_token, message = "Login successful!")
+        access_token = create_access_token(identity=email)
+        #return jsonify(token = access_token, message = "Login successful!")
         return {'message': 'Login successful'}, 200
 
 class Register(Resource, User):
@@ -49,7 +49,7 @@ class Register(Resource, User):
         if not data:
             return jsonify("Data must be in json format")
         if not email or not password:
-            return {'message': 'Invalid email or password'}, 400
+            return {'message': 'Blank email or password'}, 400
 
         if not re.match(email_format, email):
             return {'message': 'Invalid email address'}, 400
@@ -62,4 +62,4 @@ class Register(Resource, User):
 
         else:
             user.save_user(email,name, password, role)
-            return {'message': 'User has been registred successfully'}, 200
+            return {'message': 'User has been registred successfully'}, 201

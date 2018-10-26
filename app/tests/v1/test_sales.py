@@ -16,27 +16,19 @@ class TestSales(unittest.TestCase):
         }
     def test_get_sale(self):
         '''test get all sales'''
-
         with self.client:
             response = self.client.get(
                 '/api/v1/sales',
                 content_type='application/json'
             )
-            #result = json.loads(response.data.decode('utf-8'))
-            self.assertEqual(response.status_code, 200)
+            result = json.loads(response.data.decode('utf-8'))
+            self.assertEqual(response.status_code, 200, result['Sales'])
+
+        
 
     def test_get_single_sale(self):
         '''test get single sale'''
 
         with self.client:
             response = self.client.post('/api/v1/sales', data=json.dumps(self.products),content_type='application/json')
-            print ("#{#{$$%%^^^&&&&&*}}")
-            print (response)
-            self.assertEqual(response.status_code, 201)
-
-            response = self.client.get(
-                '/api/v1/sales/1',
-                content_type='application/json'
-            )
-
             self.assertEqual(response.status_code, 200)
