@@ -1,7 +1,7 @@
 import psycopg2
 import os
 
-url = os.getenv('DATABASE_URL')
+#url = os.getenv('DATABASE_URL')
 db_url = "dbname='storemanager' host='localhost' port='5432' user='postgres' password='mitchmellah'"
 
 def connection(db_url):
