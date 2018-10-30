@@ -11,34 +11,52 @@ class ProductsData():
     def fetchall(self):
         dbconn = self.con
         curr = dbconn.cursor()
-        curr.execute("""SELECT id, name,category ,quantity, price,sales_id FROM products;""")
+        curr.execute("""SELECT id, category, name, price, quantity FROM products;""")
         data = curr.fetchall()
         resp = []
         for i, items in enumerate(data):
-            id, name,category,quantity,price,sales_id = items
+            id, name,category,quantity,price = items
             data = dict(
                 products_id=int(id),
+                name=name,
                 category=category,
                 quantity=int(quantity),
-                transaction_amount=int(transaction_amount),
-                date=date_created
+                price=int(price)
+            )
+            resp.append(data)
+        return resp
+
+    def fetchone(self, id):
+        dbconn = self.con
+        curr = dbconn.cursor()
+        curr.execute("""SELECT id,category,name,price,quantity FROM products WHERE id = {};""".format(id))
+        data = curr.fetchall()
+        resp = []
+
+        for i, items in enumerate(data):
+            id,name,category,quantity,price = items
+            data = dict(
+                products_id_id=int(id),
+                name = name,
+                quantity=int(quantity),
+                price=int(price)
             )
             resp.append(data)
         return resp
 
 
-    def save(self, category, name,quantity,price,sales_id):
-        for product in self.product:
-            if product['name'] == name:
-                return "Product exists"
+    def save(self, category, name,quantity,price):
         payload = {
-              "productId":len(self.product)+1,
               "category":category,
               "name":name,
               "quantity":quantity,
-              "price" :price
+              "price":price
             }
-        self.product.append(payload)
+        query = """INSERT INTO products (category,name,quantity,price) VALUES
+                (%(category)s, %(name)s, %(quantity)s, %(price)s)"""
+        curr = self.con.cursor()
+        curr.execute(query, payload)
+        self.con.commit()
         return payload
 
             # return "There is no such product"

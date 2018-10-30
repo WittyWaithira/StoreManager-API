@@ -51,7 +51,7 @@ def tables():
             id serial PRIMARY KEY NOT NULL,
             name VARCHAR (120) NOT NULL,
             email VARCHAR (50) UNIQUE NOT NULL,
-            role VARCHAR (15) UNIQUE NOT NULL,
+            role VARCHAR (15)  NOT NULL,
             password VARCHAR (20) NOT NULL
     )"""
 
@@ -69,8 +69,7 @@ def tables():
             name VARCHAR (150) UNIQUE NOT NULL,
             category VARCHAR (80) NOT NULL,
             quantity numeric (4) NOT NULL,
-            price numeric (6) NOT NULL,
-            sale_id INTEGER REFERENCES sales(id)
+            price numeric (6) NOT NULL
     )"""
 
     # Add all tables to the queries list

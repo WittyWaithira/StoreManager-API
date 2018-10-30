@@ -8,14 +8,14 @@ class Sales(Resource, SalesData):
 
     def __init__(self):
         self.salesmodel = SalesData()
-
+    @jwt_required
     def get(self):
         result  = self.salesmodel.fetchall()
         return make_response(jsonify({
             "Sales" : result
         }), 200)
 
-
+    @jwt_required
     def post(self):
         data = request.get_json()
         if not data:
@@ -37,7 +37,7 @@ class SingleSales(Resource, SalesData):
     def __init__(self):
         self.salesmodel = SalesData()
 
-
+    @jwt_required
     def get(self, salesId):
         resp = self.salesmodel.fetchone(salesId)
 
