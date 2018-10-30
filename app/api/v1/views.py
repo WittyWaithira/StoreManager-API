@@ -1,102 +1,93 @@
 from flask_restful import Resource
 from flask import jsonify, make_response, request
-from datetime import datetime
-from flask.views import View
+from app.api.v1.models import SalesData
+from app.api.v1.models import ProductsData
+from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 
-sales = []
 
-product=[]
+class Sales(Resource, SalesData):
 
-class Sales(Resource):
-
+    def __init__(self):
+        self.salesmodel = SalesData()
 
     def get(self):
-
+        result  = self.salesmodel.fetchall()
         return make_response(jsonify({
-            "Sales" : sales
+            "Sales" : result
         }), 200)
 
+
     def post(self):
-        sales_data = request.get_json()
+        data = request.get_json()
+        if not data:
+            return jsonify({"response": "Fields cannot be empty"})
+        #id = data['salesId']
+        category = data['category']
+        name = data['name']
+        quantity = data['quantity']
+        price = data ['price']
 
-        # users data entered, stored in variables
-        sales_id = sales_data['salesId']
-        category = sales_data['category']
-        sale_name = sales_data['product_name']
-        quantity = sales_data['quantity']
-        price = sales_data['price']
-
-        # check if product is available in the products list
-        for sale in sales:
-            if sales_id==sale(["sales_id"]):
-                return "{} already exists".format(sales_id),400
-        # store products in a dictionary
-        sales_cart = {
-            "salesId":sales_id,
-            "category":category,
-            "product_name":sale_name,
-            "quantity":quantity,
-            "price":price
-        }
-        # add sale product to the sale list
-        sales.append(sales_cart)
-
-        # message to be displayed
-        return jsonify({'response':'New Sale recorded'})
+        resp = self.salesmodel.save(category, name,quantity,price)
+        return make_response(jsonify({
+            "Response" : resp,
+            "message":"Created successfully"
+            }), 200)
 
 
-class SingleSales(Resource):
-        def get(self, salesId):
+class SingleSales(Resource, SalesData):
 
-            for sales in sale:
-                if sales['salesId'] == salesId:
-                    return jsonify({"response":sales})
-            return jsonify({"response":"Product Not Available"})
+    def __init__(self):
+        self.salesmodel = SalesData()
+
+
+    def get(self, salesId):
+        resp = self.salesmodel.fetchone(salesId)
+
+        return resp
+
+
+
 
 class Products(Resource):
-        def get(self):
+    def __init__(self):
+        self.productsmodel = ProductsData()
 
-            return make_response(jsonify(
-                {
-                    'Products':product
-                }
-            ),200)
+    def get(self):
+        result  = self.productsmodel.fetchall()
+        return make_response(jsonify({
+                "Products" : result
+            }), 200)
+
+    def post(self):
+        data = request.get_json()
+        if not data:
+            return jsonify({"response": "Fields cannot be empty"})
+
+        category = data['category']
+        name = data['name']
+        quantity = data['quantity']
+        price = data ['price']
+
+        resp = self.productsmodel.save(category, name,quantity,price)
+        return make_response(jsonify( {"Response" : resp, "message":"success"}), 201)
 
 
-        def post(self):
+class GetSingleProduct(Resource,ProductsData):
+    def __init__(self):
+        self.productsmodel = ProductsData()
 
-            # fetch users input data
-            data = request.get_json()
-            if not data:
-                return jsonify({"response": "Fields cannot be empty"})
-            id = data['productId']
-            category = data['category']
-            name = data['name']
-
-            # dictionary data structure for users products
-            users_products = {
-                "productId":id,
-                "category":category,
-                "name":name
-            }
-            # Store products obtained from the user in a list
-            product.append(users_products)
-
-            # message to be displayed to the user
-            return jsonify( {'response':'New product added successfully'})
-
-class GetSingleProduct(Resource):
-    ''' fetch a single product '''
     def get(self, productId):
-            """Fetch a single product record
-                param:
-                <int:productId>
-            """
-            for product in products:
-                if product['productId'] == productId:
-                    return jsonify(
-                        {
-                            'response':product
-                        }
-                    )
-            return jsonify({'response':'Product Not Available'})
+        resp = self.productsmodel.fetchone(productId)
+
+        return resp
+
+# test jwt
+class TestMe(Resource):
+
+    def get(self):
+        current_user = 'me'
+        access_token = create_access_token(identity = current_user)
+        return {
+            'answer': 42,
+            'access_token': access_token
+        }
