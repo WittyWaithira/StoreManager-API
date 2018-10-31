@@ -25,28 +25,26 @@ class User():
         """return user from the db given a username"""
         db = self.db
         curr = db.cursor()
-        query = """SELECT *  FROM users WHERE email = '%s'""" % (email)
+        query = """SELECT email, password  FROM users WHERE email = '%s'""" % (email)
         response = curr.execute(query)
         data = curr.fetchone()
 
-        dbpass = data[4]
-
-        if (dbpass == password):
-            #generate token
-            token = create_access_token(identity=email)
-
-            resp = make_response(jsonify(
-                {
-                    'Message' : 'Successful login',
-                    'access_token' : token
-                }), 200)
-
-            return resp
-
+        if data:
+            if (data[1] == password):
+                #generate token
+                token = create_access_token(identity=email)
+                resp = make_response(jsonify(
+                    {
+                        'Message' : 'Successful login',
+                        'access_token' : token
+                    }), 200)
+                return resp
+            else:
+                resp = make_response(jsonify(
+                    {
+                        'Message' : 'Username and password does not match'
+                    }), 403)
+                return resp
         else:
-            resp = make_response(jsonify(
-                {
-                    'Message' : 'Username and password does not match'
-                }), 403)
-
-            return resp
+            return "No such user"
+#decode token

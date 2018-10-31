@@ -35,3 +35,24 @@ class GetSingleProduct(Resource,ProductsData):
         resp = self.productsmodel.fetchone(productId)
 
         return resp
+
+class ModifyProduct(Resource):
+    def __init__(self):
+        self.productsmodel = ProductsData()
+    @jwt_required
+    def put(self,productId):
+        data = request.get_json()
+        if not data:
+            return jsonify({"response": "Fields cannot be empty"})
+
+        category = data['category']
+        name = data['name']
+        quantity = data['quantity']
+        price = data ['price']
+
+        resp = self.productsmodel.modify(category,name,quantity,price)
+        return make_response(jsonify( {"Response" : resp, "message":"success"}), 201)
+
+    def delete(self,id):
+        resp = self.productsmodel.delete(id)
+        return make_response(jsonify( {"Response" : resp, "message":"success"}), 200)

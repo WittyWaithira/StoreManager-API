@@ -1,10 +1,13 @@
 from flask import jsonify
 from app.db_config import init_db
 
+from app.api.V2.models.products_models import ProductsData
+
 
 class SalesData():
     def __init__(self):
          self.con = init_db()
+         self.prod = ProductsData()
 
     def fetchall(self):
         dbconn = self.con
@@ -45,18 +48,25 @@ class SalesData():
         return resp
 
 
-    def save(self, items, items_sold,  transaction_amount):
+    def save(self, name, quantity, user):
 
-        payload = {
-            "items":items,
-            "quantity":items_sold,
-            "amount":transaction_amount
-        }
-        query = """INSERT INTO sales (items, items_sold, transaction_amount) VALUES
-                (%(items)s, %(quantity)s, %(amount)s)"""
-        curr = self.con.cursor()
-        curr.execute(query, payload)
-        self.con.commit()
-        return payload
+        resp = self.prod.update_quantity_on_sales(name, quantity)
+
+        if (resp == False):
+            return "No such product found"
+        else:
+
+            payload = {
+                "items":name,
+                "quantity":quantity,
+                "amount": resp,
+                "User" : user
+            }
+            query = """INSERT INTO sales (items, items_sold, transaction_amount) VALUES
+                    (%(items)s, %(quantity)s, %(amount)s)"""
+            curr = self.con.cursor()
+            curr.execute(query, payload)
+            self.con.commit()
+            return payload
 
                 # return "There is no such product"

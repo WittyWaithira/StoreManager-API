@@ -20,12 +20,11 @@ class Sales(Resource, SalesData):
         data = request.get_json()
         if not data:
             return jsonify({"response": "Fields cannot be empty"})
-        items = data['items']
-        items_sold = data['quantity']
-        transaction_amount = data['amount']
-        user_id = data['user']
+        name = data['items']
+        quantity = data['quantity']
+        user = get_jwt_identity()
 
-        resp = self.salesmodel.save(items, items_sold, transaction_amount)
+        resp = self.salesmodel.save(name, quantity, user)
         return make_response(jsonify({
             "Response" : resp,
             "message":"Created successfully"

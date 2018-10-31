@@ -34,23 +34,41 @@ class Register(Resource, User):
         self.user = User()
 
     def post(self):
-        data = request.get_json()
+        try:
 
-        email = data["email"]
-        password = data["password"]
-        role = data["role"]
-        name = data["name"]
 
-        if not data:
-            return jsonify("Data must be in json format")
-        if not email or not password:
-            return {'message': 'Blank email or password'}, 400
+            data = request.get_json()
 
-        if not re.match(email_format, email):
-            return {'message': 'Invalid email address'}, 400
+            email = data["email"]
+            password = data["password"]
+            role = data["role"]
+            name = data["name"]
+            roles =['admin','attendant']
+            if role not in roles:
+                return jsonify("Role can only be admin or attendant")
+    #pass for each
+            if not data:
+                return jsonify("Data must be in json format")
+            if not email or not password or not name:
+                return {'message': 'Blank email or password'}, 400
 
-        else:
-            resp = self.user.save_user(email, name, password, role)
-            return make_response(jsonify({
-                'message': 'User has been registred successfully'
-            }),201)
+            if not re.match(email_format, email):
+                return {'message': 'Invalid email address'}, 400
+
+            else:
+                resp = self.user.save_user(email, name, password, role)
+                return make_response(jsonify({
+                    'message': 'User has been registred successfully'
+                }),201)
+
+
+        except:
+
+
+          return make_response(jsonify({
+                 'message': 'User already exists'
+             }),400)
+#readme
+#assigning rolesabs
+#deduction logic
+#decode token
